@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  app:
+    build: .
+    command: >
+      sh -c "python hashes_apps/manage.py wait_for_db &&
+             python hashes_apps/manage.py migrate &&
+             python hashes_apps/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    # environment:
+    #   - POSTGRES_HOST_AUTH_METHOD=trust
+    #   - DB_USER=user001
+    #   - POSTGRES_PASSWORD=123456789
+    #   - DB_NAME=gis
+    #   - DB_HOST=daca-api_dbdaca_1
+    #   - DB_PORT=5432
+    ports:
+      - 8000:8000
+    depends_on:
+      - hash_db
+  hash_db:
+    image: kartoza/postgis:11.5-2.5
+    volumes:
+      # New storage location
+      - postgres_data:/var/lib/postgresql
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=user001
+      - POSTGRES_PASS=123456789
+      - POSTGRES_DBNAME=gis
+      - POSTGRES_HOST=localhost
+    ports:
+      - "5435:5432"
+
+volumes:
+  postgres_data:
