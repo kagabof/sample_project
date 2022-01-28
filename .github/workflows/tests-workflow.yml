@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Tests workflow
 
 on: [push, pull_request]
 
