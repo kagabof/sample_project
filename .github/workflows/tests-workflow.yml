@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag sample_project_test_app-1:$(date +%s)
+      - name: Build the Docker docker-compose
+        run: docker-compose -f docker-compose.test.yml build
+      - name: make the database ready
+        run: docker-compose -f docker-compose.test.yml run test_app sh -c "cd hashes_apps && python manage.py wait_for_db"
+      - name: Check linting 1
+        run: docker-compose -f docker-compose.test.yml run --rm test_app sh -c "flake8"
+      - name: Check linting 2
+        run: docker-compose -f docker-compose.test.yml run --rm test_app sh -c "flake8"
+      - name: Check linting 3
+        run: docker-compose -f docker-compose.test.yml run --rm test_app sh -c "flake8"
+      - name: Run migrate
+        run: docker-compose -f docker-compose.test.yml run test_app sh -c "cd hashes_apps && python manage.py migrate"
+      - name: Run Tests
+        run: docker-compose -f docker-compose.test.yml run test_app sh -c "cd hashes_apps && python manage.py test" ; docker-compose -f docker-compose.test.yml down -v
