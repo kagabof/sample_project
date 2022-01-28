@@ -46,11 +46,46 @@ Now you can run the consume the end point
 | Get all Hashes with pagination |  GET   | http://127.0.0.1:8000/hash?limit=1&offset=0 |
 | Get Hash by ID and the nearest |  GET   | http://127.0.0.1:8000/hash                  |
 
+- Create user Payload
+```
+{
+    "username": "kagabo",
+    "email": "fofo123@gmail.com",
+    "password": "dede"
+}
+```
+
+- User login payload
+```
+{
+    "email": "fofo123@gmail.com",
+    "password": "dede"
+}
+```
+
+- Create Hash payload
+```
+{
+    "hash": [3, 6]
+}
+```
+
+NB:
+- Only Create User and User login does not need a token. You need to get the token by using user login url.
+- By default the hash length is 2 but you can change it by editing `HASH_LENGTH` value in `.env` file.  
+
+
+
+
 # Using post man collection to run those listed endpoint
 
 - Import collection in postman the `sample_project.postman_collection.json` file from root directory of the project
 
 # Running test for the project
+
+- you can check running test on [GIT Actions](https://github.com/kagabof/sample_project/actions).
+
+- Running test on locally
 
 Stop the container and remove them
 
