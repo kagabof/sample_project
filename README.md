@@ -9,7 +9,7 @@ Django application storing vectors of float values of certain length (hashes)
 ```
     $ git clone https://github.com/kagabof/sample_project
     $ cd sample_project
-    $ git checkout develop
+    $ git checkout dev
 
 ```
 
