@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -23,14 +22,18 @@ from rest_framework_simplejwt.views import (
 from hashes_apps.apps.authentication import views
 from hashes_apps.apps.hashes import views as hash_views
 
-
 urlpatterns = [
-    path('auth/', views.user_login),
+    path('auth/login', views.user_login),
     path('auth/create', views.create_user),
     path('hash/', hash_views.create_hash),
+    path('hash/<pk>', hash_views.get_hash),
+    path('hash/sort_by_nearest/<pk>', hash_views.get_hash_by_the_nearest),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api-auth/', include('rest_framework.urls',
+                              namespace='rest_framework')),
+    path('api/token/', TokenObtainPairView.as_view(),
+         name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(),
+         name='token_refresh'),
 ]
